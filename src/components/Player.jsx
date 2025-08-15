@@ -42,7 +42,6 @@ const Player = () => {
       </div>
 
       
-      {/* You can add play/pause controls here */}
     </div>
   );
 }
