@@ -8,8 +8,8 @@ import './index.css';
 const App = () => {
   return (
     <BrowserRouter>
-      <div className='h-screen bg-black'>
-        <div className='h-[90%] flex'>
+      <div className='h-screen bg-[#000000] overflow-hidden'>
+        <div className='flex h-[calc(100vh-90px)] gap-2 p-2'>
           <Sidebar />
           <Display />
         </div>

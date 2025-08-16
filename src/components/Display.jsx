@@ -1,15 +1,17 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import DisplayHome from './DisplayHome'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import DisplayHome from './DisplayHome';
 
 const Display = () => {
   return (
-    <div className='w-[100%] m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto lg:w-[75%] lg:ml-0'>
-      <Routes>
-        <Route path='/' element={<DisplayHome />} />
-      </Routes>
+    <div className='flex-1 rounded-lg bg-[#121212] overflow-hidden'>
+      <div className='h-full overflow-auto'>
+        <Routes>
+          <Route path='/' element={<DisplayHome />} />
+        </Routes>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Display
+export default Display;

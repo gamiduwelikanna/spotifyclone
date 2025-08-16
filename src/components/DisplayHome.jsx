@@ -3,9 +3,10 @@ import Navbar from './Navbar';
 
 const DisplayHome = () => {
   return (
-    <>
-      <Navbar /> 
-    </>
+    <div className='px-6 pt-4'>
+      <Navbar />
+      {/* Add your content here */}
+    </div>
   );
 };
 

@@ -1,16 +1,20 @@
-import React from 'react'
-import { assets, songsData } from '../assets/frontend-assets/assets';
+import React from 'react';
+import { assets } from '../assets/frontend-assets/assets';
 
 const Navbar = () => {
   return (
-    <>
-      <div className='w-full flex justify-between items-center font-semibold'></div>
-        <div className='flex items-center gap-2'>
-            <img className='w-8 bg-black p-2 rounded-2xl cursor-pointer' src={assets.arrow_left} alt='' />
-            <img className='w-8 bg-black p-2 rounded-2xl cursor-pointer' src={assets.arrow_right} alt='' />
-        </div>
-    </>
-  )
-}
+    <div className='flex items-center gap-4 w-full'>
+      <div className='flex gap-2'>
+        <button className='rounded-full bg-[#0A0A0A] p-2'>
+          <img src={assets.arrow_left} alt="Previous" className='w-5 h-5' />
+        </button>
+        <button className='rounded-full bg-[#0A0A0A] p-2'>
+          <img src={assets.arrow_right} alt="Next" className='w-5 h-5' />
+        </button>
+      </div>
+      {/* Add other navbar items here */}
+    </div>
+  );
+};
 
-export default Navbar
+export default Navbar;
