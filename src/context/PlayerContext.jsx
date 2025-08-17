@@ -4,9 +4,14 @@ export const PlayerContext = createContext();
 
 const PlayerContextProvider = (props) => {
 
-  const audioRef = useRef(null);  
+  const audioRef = useRef(null); 
+  const seekBg = useRef();
+  const seekBar = useRef();
+
   const contextValue = {
-    audioRef 
+    audioRef,
+    seekBg,
+    seekBar 
   };
 
   return (
