@@ -1,4 +1,4 @@
-import { createContext, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { songsData } from "../assets/frontend-assets/assets";
 
 export const PlayerContext = createContext(); // Uppercase P
@@ -30,6 +30,13 @@ const PlayerContextProvider = (props) => {
     audioRef.current.pause();
     setPlayStatus(false);
   };
+
+  useEffect(() => {
+    setTimeout(()=> {
+
+    }, 1000);
+  }, [audioRef]);
+
 
   const contextValue = {
     audioRef,
