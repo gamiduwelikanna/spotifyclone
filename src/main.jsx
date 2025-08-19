@@ -7,10 +7,10 @@ import PlayerContextProvider from './context/PlayerContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <PlayerContextProvider>
+    <PlayerContextProvider>
+      <BrowserRouter>
         <App />
-      </PlayerContextProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </PlayerContextProvider>
   </React.StrictMode>
 );
