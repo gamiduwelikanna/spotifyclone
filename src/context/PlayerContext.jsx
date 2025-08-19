@@ -42,6 +42,8 @@ const PlayerContextProvider = (props) => {
     }
   };
 
+  
+
   useEffect(() => {
     if (!audioRef.current) return;
 
