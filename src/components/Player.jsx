@@ -3,7 +3,7 @@ import { assets, songsData } from '../assets/frontend-assets/assets';
 import { PlayerContext } from '../context/PlayerContext';
 
 const Player = () => {
-  const { track, seekBar, seekBg, playStatus, play, pause, time, previous,next } = useContext(PlayerContext);
+  const { track, seekBar, seekBg, playStatus, play, pause, time, previous,next, seekSong } = useContext(PlayerContext);
 
   const formatTime = (time) => {
     return `${time.minute}:${time.second < 10 ? '0' + time.second : time.second}`;
@@ -45,7 +45,7 @@ const Player = () => {
         <div className='flex items-center gap-5'>
           <p className='text-xs text-gray-400'>{formatTime(time.currentTime)}</p>
           <div 
-            ref={seekBg} 
+            ref={seekBg} onClick={seekSong}
             className='w-[60vw] max-w-[500px] h-1 bg-gray-500 rounded-full cursor-pointer'
           >
             <div 
