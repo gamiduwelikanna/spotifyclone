@@ -3,7 +3,7 @@ import { assets, songsData } from '../assets/frontend-assets/assets';
 import { PlayerContext } from '../context/PlayerContext';
 
 const Player = () => {
-  const { track, seekBar, seekBg, playStatus, play, pause, time } = useContext(PlayerContext);
+  const { track, seekBar, seekBg, playStatus, play, pause, time, previous,next } = useContext(PlayerContext);
 
   const formatTime = (time) => {
     return `${time.minute}:${time.second < 10 ? '0' + time.second : time.second}`;
@@ -22,7 +22,7 @@ const Player = () => {
       <div className='flex flex-col items-center gap-1 m-auto'>
         <div className='flex gap-4'>
           <img className='w-4 cursor-pointer hover:scale-110' src={assets.shuffle_icon} alt='shuffle' />
-          <img className='w-4 cursor-pointer hover:scale-110' src={assets.prev_icon} alt='previous' />
+          <img onClick={previous} className='w-4 cursor-pointer hover:scale-110' src={assets.prev_icon} alt='previous' />
           {playStatus ? (
             <img 
               className='w-4 cursor-pointer hover:scale-110' 
@@ -38,7 +38,7 @@ const Player = () => {
               onClick={play}
             />
           )}
-          <img className='w-4 cursor-pointer hover:scale-110' src={assets.next_icon} alt='next' />
+          <img onClick={next} className='w-4 cursor-pointer hover:scale-110' src={assets.next_icon} alt='next' />
           <img className='w-4 cursor-pointer hover:scale-110' src={assets.loop_icon} alt='loop' />
         </div>
 

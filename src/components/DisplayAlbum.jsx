@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Navbar from './Navbar';
 import { useParams } from 'react-router-dom';
 import { albumsData, songsData, assets } from '../assets/frontend-assets/assets';
+import { PlayerContext } from '../context/PlayerContext';
 
 const DisplayAlbum = () => {
   const { id } = useParams();
   const albumData = albumsData[id];
+  const { playWithId } = useContext(PlayerContext);  // Fix the variable name
 
   if (!albumData) {
     return <div className="px-6 pt-4 text-white">Album not found</div>;
@@ -43,12 +45,13 @@ const DisplayAlbum = () => {
 
       {songsData.map((item, index) => (
         <div 
+          onClick={() => playWithId(index)}  
           key={index} 
           className='grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 items-center text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer'
         >
           <div className='flex items-center text-white'>
             <span className='mr-4 text-[#a7a7a7]'>{index + 1}</span>
-            <img className='w-10 mr-5' src={item.image} alt={item.name} />
+            <img className='w-10 mr-5' src={item.image} alt="" />
             <span>{item.name}</span>
           </div>
           <p>{albumData.name}</p>

@@ -1,62 +1,75 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState, useCallback } from "react";
 import { songsData } from "../assets/frontend-assets/assets";
 
 export const PlayerContext = createContext();
 
-const PlayerContextProvider = (props) => {
+const PlayerContextProvider = ({ children }) => {
   const audioRef = useRef(null);
-  const seekBg = useRef();
-  const seekBar = useRef();
+  const seekBg = useRef(null);
+  const seekBar = useRef(null);
 
   const [track, setTrack] = useState(songsData[0]);
   const [playStatus, setPlayStatus] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [time, setTime] = useState({
-    currentTime: {
-      second: 0,
-      minute: 0,
-    },
-    totalTime: {
-      second: 0,
-      minute: 0,
-    },
+    currentTime: { second: 0, minute: 0 },
+    totalTime: { second: 0, minute: 0 },
   });
 
-  // Reset progress bar on component mount
-  useEffect(() => {
-    if (seekBar.current) {
-      seekBar.current.style.width = '0%';
+  const play = useCallback(async () => {
+    try {
+      if (audioRef.current) {
+        await audioRef.current.play();
+        setPlayStatus(true);
+      }
+    } catch (error) {
+      console.error('Error playing audio:', error);
+      setPlayStatus(false);
     }
   }, []);
 
-  const play = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-      setPlayStatus(true);
-    }
-  };
-
-  const pause = () => {
+  const pause = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
       setPlayStatus(false);
     }
-  };
+  }, []);
 
-  
+
+  const playWithId = async (id) => {
+    await setTrack(songsData[id]);
+    await audioRef.current.play();
+    setPlayStatus
+  }
+
+  const previous = async () => {
+    if(track.id > 0){
+      await setTrack(songsData[track.id-1]);
+      await audioRef.current.play();
+      setPlayStatus(true);
+    }
+  }
+
+  const next = async () => {
+    if(track.id < songsData.length - 1){
+      await setTrack(songsData[track.id+1]);
+      await audioRef.current.play();
+      setPlayStatus(true);
+    }
+  }
 
   useEffect(() => {
     if (!audioRef.current) return;
 
-    // Reset progress bar when track changes
-    if (seekBar.current) {
-      seekBar.current.style.width = '0%';
-    }
+    const resetProgress = () => {
+      if (seekBar.current) {
+        seekBar.current.style.width = '0%';
+      }
+    };
 
-    // Set total duration once audio metadata is loaded
-    audioRef.current.onloadedmetadata = () => {
+    const handleLoadedMetadata = () => {
       setTime(prev => ({
         ...prev,
-        currentTime: { second: 0, minute: 0 },
         totalTime: {
           second: Math.floor(audioRef.current.duration % 60),
           minute: Math.floor(audioRef.current.duration / 60),
@@ -64,12 +77,10 @@ const PlayerContextProvider = (props) => {
       }));
     };
 
-    // Update current time and progress bar
-    audioRef.current.ontimeupdate = () => {
+    const handleTimeUpdate = () => {
       const currentTime = audioRef.current.currentTime;
       const duration = audioRef.current.duration;
 
-      // Update time display
       setTime(prev => ({
         ...prev,
         currentTime: {
@@ -78,34 +89,23 @@ const PlayerContextProvider = (props) => {
         }
       }));
 
-      // Update progress bar
       if (seekBar.current && !isNaN(duration)) {
         const percentage = (currentTime / duration) * 100;
         seekBar.current.style.width = `${percentage}%`;
       }
     };
 
-    // Handle seek functionality
-    if (seekBg.current) {
-      seekBg.current.onclick = (e) => {
-        const width = seekBg.current.clientWidth;
-        const clickX = e.offsetX;
-        const duration = audioRef.current.duration;
+    resetProgress();
+    audioRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
 
-        if (!isNaN(duration)) {
-          audioRef.current.currentTime = (clickX / width) * duration;
-        }
-      };
-    }
-
-    // Cleanup function
     return () => {
       if (audioRef.current) {
-        audioRef.current.ontimeupdate = null;
-        audioRef.current.onloadedmetadata = null;
+        audioRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
       }
     };
-  }, [track]); // Added track as dependency to reset when track changes
+  }, [track]);
 
   const contextValue = {
     audioRef,
@@ -115,15 +115,23 @@ const PlayerContextProvider = (props) => {
     setTrack,
     playStatus,
     setPlayStatus,
+    loading,
     time,
     setTime,
     play,
     pause,
+    playWithId,
+    previous,next
   };
 
   return (
     <PlayerContext.Provider value={contextValue}>
-      {props.children}
+      <audio
+        ref={audioRef}
+        src={track.src}
+        preload="metadata"
+      />
+      {children}
     </PlayerContext.Provider>
   );
 };
