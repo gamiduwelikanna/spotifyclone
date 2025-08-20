@@ -21,7 +21,4 @@ const App = () => {
 };
 
 export default App;
-nkjsrnfkrj
-dfbskfkwse
-fnwkjfwk
-efwkjen
+
